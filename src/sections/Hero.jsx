@@ -84,73 +84,73 @@ export default function Hero() {
         {/* Left vector */}
         <div className="pointer-events-none absolute inset-y-0 left-0 hidden md:block
                 w-[45%] lg:w-[40%] xl:w-[36%] 2xl:w-[25%]">
-  <img src={heroVector} alt="" className="h-full w-full object-cover opacity-95" />
+          <img src={heroVector} alt="" className="h-full w-full object-cover opacity-95" />
         </div>
         {/* Centered content wrapper */}
-<div className="absolute right-0 top-0 h-full w-full md:w-[560px] lg:w-[1000px] flex items-center">
-  <div className="w-full pr-4 sm:pr-6 lg:pr-10 pl-4 md:pl-0">
-<div className="ml-auto w-full max-w-[520px] lg:max-w-[600px] xl:max-w-[680px] 2xl:max-w-[760px]">
-  <h1 className="text-3xl md:text-4xl 2xl:text-[44px] font-extrabold leading-tight text-slate-900">
-    Ready to fix your device first
-    <br />
-    with us?
-  </h1>
+        <div className="absolute right-0 top-0 h-full w-full md:w-[560px] lg:w-[1000px] flex items-center">
+          <div className="w-full pr-4 sm:pr-6 lg:pr-10 pl-4 md:pl-0">
+            <div className="ml-auto w-full max-w-[520px] lg:max-w-[600px] xl:max-w-[680px] 2xl:max-w-[760px]">
+              <h1 className="text-3xl md:text-4xl 2xl:text-[44px] font-extrabold leading-tight text-slate-900">
+                Ready to fix your device first
+                <br />
+                with us?
+              </h1>
 
-<div
-  className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur
+              <div
+                className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur
              min-h-[260px] sm:min-h-[200px] lg:min-h-[200px] xl:min-h-0 2xl:min-h-0">
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-2">
-          {TABS.map((t) => (
-            <TabPill
-              key={t.key}
-              active={activeTab === t.key}
-              icon={t.icon}
-              onClick={() => setActiveTab(t.key)}
-            >
-              {t.label}
-            </TabPill>
-          ))}
-        </div>
+                {/* Tabs */}
+                <div className="flex flex-wrap gap-2">
+                  {TABS.map((t) => (
+                    <TabPill
+                      key={t.key}
+                      active={activeTab === t.key}
+                      icon={t.icon}
+                      onClick={() => setActiveTab(t.key)}
+                    >
+                      {t.label}
+                    </TabPill>
+                  ))}
+                </div>
 
-        {/* Form */}
-<div key={activeTab} className="mt-3 grid gap-3 lg:gap-4 xl:gap-5">
-<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:gap-4 xl:gap-5">
-            <Select placeholder="Brands" options={config.brands} />
-            <Select placeholder="Select Device" options={config.devices} />
-          </div>
+                {/* Form */}
+                <div key={activeTab} className="mt-3 grid gap-3 lg:gap-4 xl:gap-5">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:gap-4 xl:gap-5">
+                    <Select placeholder="Brands" options={config.brands} />
+                    <Select placeholder="Select Device" options={config.devices} />
+                  </div>
 
-<input
-  placeholder={config.queryPlaceholder}
-  className="
+                  <input
+                    placeholder={config.queryPlaceholder}
+                    className="
     w-full rounded-lg border border-slate-200 bg-white shadow-sm
     h-10 sm:h-11 lg:h-12 xl:h-14
     px-3 lg:px-4
     text-sm lg:text-base
     focus:outline-none focus:ring-2 focus:ring-brand-200/70
   "
-/>
-        </div>
-      </div>
-      <Button
-  variant="brand"
-  className="
+                  />
+                </div>
+              </div>
+              <Button
+                variant="brand"
+                className="
     w-full sm:w-auto rounded-md font-semibold
     h-10 sm:h-11 lg:h-12 xl:h-14 mt-8
     px-4 lg:px-6
     text-sm lg:text-base
     bg-[#1B3ECD] hover:bg-[#1D4ED8]
   "
->
+              >
 
-            <span className="inline-flex items-center gap-2">
-              Get Quote
-              <SendIcon className="h-4 w-4" />
-            </span>
-          </Button>
-    </div>
-  </div>
-</div>
+                <span className="inline-flex items-center gap-2">
+                  Get Quote
+                  <SendIcon className="h-4 w-4" />
+                </span>
+              </Button>
+            </div>
+          </div>
+        </div>
 
       </div>
     </section>
