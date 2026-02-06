@@ -1,91 +1,227 @@
-import Container from '../components/Container.jsx'
-import Button from '../components/Button.jsx'
-import Badge from '../components/Badge.jsx'
-import { Assets } from '../assets'
+import { useMemo, useState } from "react";
+import Button from "../components/Button.jsx";
+import { Assets } from "../assets";
+import heroVector from "../assets/heroVector.svg";
 
-function Select({ label, options = ['Select'], defaultValue }) {
+const TABS = [
+  { key: "phone", label: "Phone/Tab", icon: PhoneIcon },
+  { key: "laptop", label: "Laptop", icon: LaptopIcon },
+  { key: "others", label: "Others", icon: GridIcon },
+];
+
+function Select({ placeholder = "Select", options = [] }) {
   return (
-    <label className="grid gap-1">
-      <span className="text-xs font-semibold text-slate-700">{label}</span>
-      <select
-        defaultValue={defaultValue ?? options[0]}
-        className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-200/70"
-      >
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
-      </select>
-    </label>
-  )
+    <select
+      defaultValue=""
+      className="
+        w-full rounded-lg border border-slate-200 bg-white shadow-sm
+        h-10 sm:h-11 lg:h-12 xl:h-14
+        px-3 lg:px-4
+        text-sm lg:text-base
+        focus:outline-none focus:ring-2 focus:ring-brand-200/70
+      "
+    >
+      <option value="" disabled>{placeholder}</option>
+      {options.map((o) => (
+        <option key={o} value={o}>{o}</option>
+      ))}
+    </select>
+  );
 }
 
-export default function Hero() {
+
+function TabPill({ active, icon: Icon, children, onClick }) {
   return (
-    <section id="top" className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 via-white to-white" />
-      <div className="pointer-events-none absolute -left-40 -top-40 h-[420px] w-[420px] rounded-full bg-brand-200/60 blur-3xl" />
-      <div className="pointer-events-none absolute -right-40 top-12 h-[520px] w-[520px] rounded-full bg-slate-200/70 blur-3xl" />
+    <button
+      type="button"
+      onClick={onClick}
+      className={[
+        "inline-flex items-center gap-2 rounded-md font-semibold transition",
+        "px-3 py-1.5 text-xs",
+        "lg:px-4 lg:py-2 lg:text-sm",
+        active
+          ? "bg-white text-slate-900 shadow-sm border border-slate-200"
+          : "bg-transparent text-slate-600 hover:bg-white/60",
+      ].join(" ")}
+    >
+      <Icon className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+      {children}
+    </button>
+  );
+}
 
-      <Container className="grid items-center gap-10 py-12 md:grid-cols-2 md:py-16">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge className="border-brand-200 bg-brand-50 text-brand-800">Trusted technicians</Badge>
-            <Badge>Pickup & delivery</Badge>
-            <Badge>Transparent quotations</Badge>
-          </div>
 
-          <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-            Repair, buy & exchange —
-            <span className="text-brand-700"> all from one place</span>.
-          </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600">
-            ThikHolo helps people book repair services, get clear quotations, and track pickup-to-delivery in real time.
-          </p>
+export default function Hero() {
+  const [activeTab, setActiveTab] = useState("phone");
 
-          <div id="get-started" className="mt-7 rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
-            <div className="grid gap-3 sm:grid-cols-3">
-              <Select label="Brand" options={['Apple', 'Samsung', 'Xiaomi', 'Vivo', 'Oppo']} defaultValue="Apple" />
-              <Select label="Model" options={['iPhone 15', 'iPhone 14', 'iPhone 13', 'iPhone 12']} defaultValue="iPhone 14" />
-              <Select label="Area" options={['Dhaka', 'Chattogram', 'Sylhet', 'Khulna']} defaultValue="Dhaka" />
-            </div>
+  const config = useMemo(() => {
+    if (activeTab === "laptop") {
+      return {
+        brands: ["HP", "Dell", "Lenovo", "Asus", "Acer", "Apple"],
+        devices: ["Laptop (General)", "MacBook", "Gaming Laptop", "Ultrabook"],
+        queryPlaceholder: "Enter issue (e.g., keyboard, display, slow...)",
+      };
+    }
+    if (activeTab === "others") {
+      return {
+        brands: ["Sony", "JBL", "Xiaomi", "Samsung", "Walton", "Other"],
+        devices: ["Smart Watch", "Headphone", "Speaker", "TV", "Router", "Other"],
+        queryPlaceholder: "Enter query (e.g., not charging, no sound...)",
+      };
+    }
+    return {
+      brands: ["Apple", "Samsung", "Xiaomi", "Vivo", "Oppo", "Realme"],
+      devices: ["iPhone", "iPad", "Android Phone", "Android Tab"],
+      queryPlaceholder: "Enter query (e.g., screen, battery, camera...)",
+    };
+  }, [activeTab]);
 
-            <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-              <label className="grid gap-1">
-                <span className="text-xs font-semibold text-slate-700">Issue</span>
-                <input
-                  placeholder="Example: Screen broken, battery draining..."
-                  className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-200/70"
-                />
-              </label>
+  return (
+    <section id="top" className="w-full">
+      {/* Full width background container */}
+      <div className="relative w-full overflow-hidden bg-[#BBEAF7]
+                      min-h-[480px] sm:min-h-[480px] md:min-h-[480px] lg:min-h-[680px]">
+        {/* Left vector */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden md:block
+                w-[45%] lg:w-[40%] xl:w-[36%] 2xl:w-[25%]">
+  <img src={heroVector} alt="" className="h-full w-full object-cover opacity-95" />
+        </div>
+        {/* Centered content wrapper */}
+<div className="absolute right-0 top-0 h-full w-full md:w-[560px] lg:w-[1000px] flex items-center">
+  <div className="w-full pr-4 sm:pr-6 lg:pr-10 pl-4 md:pl-0">
+<div className="ml-auto w-full max-w-[520px] lg:max-w-[600px] xl:max-w-[680px] 2xl:max-w-[760px]">
+  <h1 className="text-3xl md:text-4xl 2xl:text-[44px] font-extrabold leading-tight text-slate-900">
+    Ready to fix your device first
+    <br />
+    with us?
+  </h1>
 
-              <Button variant="brand" className="h-11 rounded-2xl px-6">
-                Get quotation
-              </Button>
-            </div>
-
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-xs text-slate-500">
-                Average response: <span className="font-semibold text-slate-700">within 30 minutes</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-semibold text-slate-500">Pay with</span>
-                <img src={Assets.payVisa} alt="Visa" className="h-6 w-auto" />
-                <img src={Assets.payNagad} alt="Nagad" className="h-6 w-auto" />
-              </div>
-            </div>
-          </div>
+<div className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur
+                min-h-[260px] sm:min-h-[280px] lg:min-h-[320px] xl:min-h-[360px] 2xl:min-h-[420px]">
+        {/* Tabs */}
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((t) => (
+            <TabPill
+              key={t.key}
+              active={activeTab === t.key}
+              icon={t.icon}
+              onClick={() => setActiveTab(t.key)}
+            >
+              {t.label}
+            </TabPill>
+          ))}
         </div>
 
-        <div className="relative">
-          <div className="absolute -inset-6 rounded-[32px] bg-gradient-to-br from-brand-200/35 via-white to-slate-200/55 blur-2xl" />
-          <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-soft">
-            <img src={Assets.hero} alt="ThikHolo hero" className="h-auto w-full object-cover" />
+        {/* Form */}
+<div key={activeTab} className="mt-3 grid gap-3 lg:gap-4 xl:gap-5">
+<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:gap-4 xl:gap-5">
+            <Select placeholder="Brands" options={config.brands} />
+            <Select placeholder="Select Device" options={config.devices} />
           </div>
+
+<input
+  placeholder={config.queryPlaceholder}
+  className="
+    w-full rounded-lg border border-slate-200 bg-white shadow-sm
+    h-10 sm:h-11 lg:h-12 xl:h-14
+    px-3 lg:px-4
+    text-sm lg:text-base
+    focus:outline-none focus:ring-2 focus:ring-brand-200/70
+  "
+/>
+
+<Button
+  variant="brand"
+  className="
+    w-full sm:w-auto rounded-md font-semibold
+    h-10 sm:h-11 lg:h-12 xl:h-14
+    px-4 lg:px-6
+    text-sm lg:text-base
+  "
+>
+
+            <span className="inline-flex items-center gap-2">
+              Get Quote
+              <ArrowIcon className="h-4 w-4" />
+            </span>
+          </Button>
         </div>
-      </Container>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
     </section>
-  )
+  );
+}
+
+/* ---- Icons ---- */
+function PhoneIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M8 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path
+        d="M10 18h4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function LaptopIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 6h16v10H4V6Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 18h20"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function GridIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M5 12h12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M13 6l6 6-6 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }

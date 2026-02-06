@@ -17,7 +17,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur">
       <Container className="flex h-16 items-center justify-between">
         <a href="#top" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <img src={Assets.logoPrimary} alt="ThikHolo" className="h-9 w-auto" />
+          <img src={Assets.logoVariant} alt="ThikHolo" className="h-16 md:h-20 w-auto"/>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
