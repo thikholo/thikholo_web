@@ -96,8 +96,9 @@ export default function Hero() {
     with us?
   </h1>
 
-<div className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur
-                min-h-[260px] sm:min-h-[280px] lg:min-h-[320px] xl:min-h-[360px] 2xl:min-h-[420px]">
+<div
+  className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur
+             min-h-[260px] sm:min-h-[200px] lg:min-h-[200px] xl:min-h-0 2xl:min-h-0">
         {/* Tabs */}
         <div className="flex flex-wrap gap-2">
           {TABS.map((t) => (
@@ -129,24 +130,24 @@ export default function Hero() {
     focus:outline-none focus:ring-2 focus:ring-brand-200/70
   "
 />
-
-<Button
+        </div>
+      </div>
+      <Button
   variant="brand"
   className="
     w-full sm:w-auto rounded-md font-semibold
-    h-10 sm:h-11 lg:h-12 xl:h-14
+    h-10 sm:h-11 lg:h-12 xl:h-14 mt-8
     px-4 lg:px-6
     text-sm lg:text-base
+    bg-[#1B3ECD] hover:bg-[#1D4ED8]
   "
 >
 
             <span className="inline-flex items-center gap-2">
               Get Quote
-              <ArrowIcon className="h-4 w-4" />
+              <SendIcon className="h-4 w-4" />
             </span>
           </Button>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -207,21 +208,22 @@ function GridIcon({ className = "" }) {
   );
 }
 
-function ArrowIcon({ className = "" }) {
+function SendIcon({ className = "" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none">
       <path
-        d="M5 12h12"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M13 6l6 6-6 6"
+        d="M3 11.5L21 3l-8.5 18-2.9-7.2L3 11.5Z"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinejoin="round"
       />
+      <path
+        d="M21 3L9.6 13.8"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
+
