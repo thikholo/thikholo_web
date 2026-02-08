@@ -142,4 +142,5 @@ export default function HowItWorks() {
       </Container>
     </section>
   );
+  
 }
