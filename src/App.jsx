@@ -4,7 +4,6 @@ import Services from './sections/Services.jsx'
 import HowItWorks from './sections/HowItWorks.jsx'
 import Pricing from './sections/Pricing.jsx'
 import FAQ from './sections/FAQ.jsx'
-import CTA from './sections/CTA.jsx'
 import Footer from './sections/Footer.jsx'
 
 export default function App() {
@@ -17,7 +16,6 @@ export default function App() {
         <HowItWorks />
         <Pricing />
         <FAQ />
-        <CTA />
       </main>
       <Footer />
     </div>

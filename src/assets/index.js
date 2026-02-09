@@ -12,6 +12,8 @@ import photoCard2 from './fig/photo-card-2.png'
 import payVisa from './fig/pay-visa.png'
 import payNagad from './fig/pay-nagad.png'
 
+
+
 export const Assets = {
   logoPrimary,
   logoInverse,
