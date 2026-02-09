@@ -103,7 +103,7 @@ export default function HowItWorks() {
               <div className="text-base font-semibold text-slate-900">
                 The Impact We Make
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 line-clamp-2">
                 Every repaired device = One less added to the planet&apos;s growing
                 e-waste problem. At Thikholo, we&apos;re not just fixing devices —
                 we&apos;re helping people reuse and rethink, not replace.
