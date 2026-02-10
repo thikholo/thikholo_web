@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import Button from "../components/Button.jsx";
-import { Assets } from "../assets";
 import heroVector from "../assets/heroVector.svg";
 
 const TABS = [
