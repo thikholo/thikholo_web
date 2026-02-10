@@ -29,11 +29,11 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="secondary" as="a" href="#contact">
+          <Button variant="secondary" as="a" href="#footer">
             Contact
           </Button>
           <Button variant="brand" as="a" href="#get-started">
-            Sign Up
+            Download
           </Button>
         </div>
 

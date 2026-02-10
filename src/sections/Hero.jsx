@@ -1,17 +1,37 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Button from "../components/Button.jsx";
 import heroVector from "../assets/heroVector.svg";
 
-const TABS = [
+const DEVICE_TYPES = [
   { key: "phone", label: "Phone/Tab", icon: PhoneIcon },
   { key: "laptop", label: "Laptop", icon: LaptopIcon },
   { key: "others", label: "Others", icon: GridIcon },
 ];
 
-function Select({ placeholder = "Select", options = [] }) {
+const PHONE_BRANDS = [
+  "Apple","Samsung","Xiaomi","Redmi","POCO","Vivo","OPPO","Realme","OnePlus",
+  "Google","Huawei","Honor","Motorola","Nokia","Sony","ASUS","Lenovo",
+  "Infinix","Tecno","itel","Walton","Symphony","Nothing","Other",
+];
+
+const LAPTOP_BRANDS = [
+  "Apple","Dell","HP","Lenovo","ASUS","Acer","MSI","Razer","Microsoft",
+  "Samsung","Huawei","LG","Gigabyte","VAIO","Dynabook","Framework","Other",
+];
+
+const OTHER_BRANDS = [
+  "Sony","JBL","Xiaomi","Samsung","Walton","Anker","Logitech","Bose",
+  "Sennheiser","TP-Link","D-Link","Netgear","Apple","Google","Other",
+];
+
+
+const MESSENGER_URL = "https://www.facebook.com/messages/t/thikholo.live";
+
+function Select({ placeholder = "Select", options = [], value, onChange }) {
   return (
     <select
-      defaultValue=""
+      value={value}
+      onChange={(e) => onChange?.(e.target.value)}
       className="
         w-full rounded-lg border border-slate-200 bg-white shadow-sm
         h-10 sm:h-11 lg:h-12 xl:h-14
@@ -21,13 +41,10 @@ function Select({ placeholder = "Select", options = [] }) {
       "
     >
       <option value="" disabled>{placeholder}</option>
-      {options.map((o) => (
-        <option key={o} value={o}>{o}</option>
-      ))}
+      {options.map((o) => <option key={o} value={o}>{o}</option>)}
     </select>
   );
 }
-
 
 function TabPill({ active, icon: Icon, children, onClick }) {
   return (
@@ -42,6 +59,7 @@ function TabPill({ active, icon: Icon, children, onClick }) {
           ? "bg-white text-slate-900 shadow-sm border border-slate-200"
           : "bg-transparent text-slate-600 hover:bg-white/60",
       ].join(" ")}
+      aria-pressed={active}
     >
       <Icon className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
       {children}
@@ -49,45 +67,96 @@ function TabPill({ active, icon: Icon, children, onClick }) {
   );
 }
 
-
 export default function Hero() {
-  const [activeTab, setActiveTab] = useState("phone");
+  const [deviceType, setDeviceType] = useState("phone");
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [problem, setProblem] = useState("");
 
-  const config = useMemo(() => {
-    if (activeTab === "laptop") {
-      return {
-        brands: ["HP", "Dell", "Lenovo", "Asus", "Acer", "Apple"],
-        devices: ["Laptop (General)", "MacBook", "Gaming Laptop", "Ultrabook"],
-        queryPlaceholder: "Enter issue (e.g., keyboard, display, slow...)",
-      };
+  const [lastMessage, setLastMessage] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  // ✅ move hooks INSIDE component
+  const [showHelper, setShowHelper] = useState(false);
+  const helperTimerRef = useRef(null);
+
+  const brandOptions = useMemo(() => {
+    if (deviceType === "laptop") return LAPTOP_BRANDS;
+    if (deviceType === "others") return OTHER_BRANDS;
+    return PHONE_BRANDS;
+  }, [deviceType]);
+
+  const deviceLabel = useMemo(
+    () => DEVICE_TYPES.find((d) => d.key === deviceType)?.label ?? deviceType,
+    [deviceType]
+  );
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
     }
-    if (activeTab === "others") {
-      return {
-        brands: ["Sony", "JBL", "Xiaomi", "Samsung", "Walton", "Other"],
-        devices: ["Smart Watch", "Headphone", "Speaker", "TV", "Router", "Other"],
-        queryPlaceholder: "Enter query (e.g., not charging, no sound...)",
-      };
+  }
+
+  function showHelperFor10s() {
+    setShowHelper(true);
+    if (helperTimerRef.current) clearTimeout(helperTimerRef.current);
+    helperTimerRef.current = setTimeout(() => setShowHelper(false), 3_000);
+  }
+
+async function onGetQuote() {
+  const b = brand.trim();
+  const m = model.trim();
+  const p = problem.trim();
+
+  if (!deviceType || !b || !m || !p) {
+    alert("Please select Device Type, Brand, and fill Model + Problem.");
+    return;
+  }
+
+  const msg =
+    `Device Type: ${deviceLabel}\n` +
+    `Brand: ${b}\n` +
+    `Model: ${m}\n` +
+    `Problem: ${p}`;
+
+  setLastMessage(msg);
+  setCopied(false);
+  showHelperFor10s();
+
+  const ok = await copyText(msg);
+  setCopied(ok);
+
+  // ✅ clear fields (React state)
+  setBrand("");
+  setModel("");
+  setProblem("");
+
+  // ⚠️ NOTE: opening a new tab after setTimeout may be blocked by popup blockers
+setTimeout(() => {
+    try {
+      win.location.href = MESSENGER_URL;
+    } catch {
+      // fallback if browser blocks location change
+      window.location.href = MESSENGER_URL;
     }
-    return {
-      brands: ["Apple", "Samsung", "Xiaomi", "Vivo", "Oppo", "Realme"],
-      devices: ["iPhone", "iPad", "Android Phone", "Android Tab"],
-      queryPlaceholder: "Enter query (e.g., screen, battery, camera...)",
-    };
-  }, [activeTab]);
+  }, 3000);
+}
+
 
   return (
     <section id="top" className="w-full">
-      {/* Full width background container */}
-      <div className="relative w-full overflow-hidden bg-[#BBEAF7]
-                      min-h-[480px] sm:min-h-[480px] md:min-h-[480px] lg:min-h-[680px]">
+      <div className="relative w-full overflow-hidden bg-[#BBEAF7] min-h-[480px] lg:min-h-[680px]">
         {/* Left vector */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 hidden md:block
-                w-[45%] lg:w-[40%] xl:w-[36%] 2xl:w-[25%]">
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden md:block w-[45%] lg:w-[40%] xl:w-[36%] 2xl:w-[25%]">
           <img src={heroVector} alt="" className="h-full w-full object-cover opacity-95" />
         </div>
-        {/* Centered content wrapper */}
-        <div className="absolute right-0 top-0 h-full w-full md:w-[560px] lg:w-[1000px] flex items-center">
-          <div className="w-full pr-4 sm:pr-6 lg:pr-10 pl-4 md:pl-0">
+
+        {/* Right content pinned */}
+        <div className="absolute right-0 top-0 flex h-full w-full items-center md:w-[560px] lg:w-[1000px]">
+          <div className="w-full pl-4 pr-4 md:pl-0 sm:pr-6 lg:pr-10">
             <div className="ml-auto w-full max-w-[520px] lg:max-w-[600px] xl:max-w-[680px] 2xl:max-w-[760px]">
               <h1 className="text-3xl md:text-4xl 2xl:text-[44px] font-extrabold leading-tight text-slate-900">
                 Ready to fix your device first
@@ -95,62 +164,100 @@ export default function Hero() {
                 with us?
               </h1>
 
-              <div
-                className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur
-             min-h-[260px] sm:min-h-[200px] lg:min-h-[200px] xl:min-h-0 2xl:min-h-0">
-                {/* Tabs */}
+              <div className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur">
+                {/* Device Type radio pills */}
                 <div className="flex flex-wrap gap-2">
-                  {TABS.map((t) => (
+                  {DEVICE_TYPES.map((t) => (
                     <TabPill
                       key={t.key}
-                      active={activeTab === t.key}
+                      active={deviceType === t.key}
                       icon={t.icon}
-                      onClick={() => setActiveTab(t.key)}
+                      onClick={() => {
+                        setDeviceType(t.key);
+                        setBrand("");
+                      }}
                     >
                       {t.label}
                     </TabPill>
                   ))}
                 </div>
 
-                {/* Form */}
-                <div key={activeTab} className="mt-3 grid gap-3 lg:gap-4 xl:gap-5">
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:gap-4 xl:gap-5">
-                    <Select placeholder="Brands" options={config.brands} />
-                    <Select placeholder="Select Device" options={config.devices} />
-                  </div>
+                <div className="mt-3 grid gap-3 lg:gap-4 xl:gap-5">
+                  <Select placeholder="Brand" options={brandOptions} value={brand} onChange={setBrand} />
 
                   <input
-                    placeholder={config.queryPlaceholder}
+                    value={model}
+                    onChange={(e) => setModel(e.target.value)}
+                    placeholder="Model (e.g., iPhone 13, Dell XPS 15)"
                     className="
-    w-full rounded-lg border border-slate-200 bg-white shadow-sm
-    h-10 sm:h-11 lg:h-12 xl:h-14
-    px-3 lg:px-4
-    text-sm lg:text-base
-    focus:outline-none focus:ring-2 focus:ring-brand-200/70
-  "
+                      w-full rounded-lg border border-slate-200 bg-white shadow-sm
+                      h-10 sm:h-11 lg:h-12 xl:h-14
+                      px-3 lg:px-4
+                      text-sm lg:text-base
+                      focus:outline-none focus:ring-2 focus:ring-brand-200/70
+                    "
+                  />
+
+                  <textarea
+                    value={problem}
+                    onChange={(e) => setProblem(e.target.value)}
+                    placeholder="Problem description (e.g., screen broken, battery drains fast...)"
+                    className="
+                      w-full rounded-lg border border-slate-200 bg-white shadow-sm
+                      min-h-[96px] lg:min-h-[110px] xl:min-h-[130px]
+                      px-3 lg:px-4 py-3
+                      text-sm lg:text-base
+                      focus:outline-none focus:ring-2 focus:ring-brand-200/70
+                      resize-none
+                    "
                   />
                 </div>
               </div>
+
               <Button
                 variant="brand"
+                onClick={onGetQuote}
                 className="
-    w-full sm:w-auto rounded-md font-semibold
-    h-10 sm:h-11 lg:h-12 xl:h-14 mt-8
-    px-4 lg:px-6
-    text-sm lg:text-base
-    bg-[#1B3ECD] hover:bg-[#1D4ED8]
-  "
+                  mt-8 w-full sm:w-auto rounded-md font-semibold
+                  h-10 sm:h-11 lg:h-12 xl:h-14
+                  px-4 lg:px-6
+                  text-sm lg:text-base
+                  bg-[#1D4ED8] hover:bg-[#1B3ECD]
+                "
               >
-
                 <span className="inline-flex items-center gap-2">
                   Get Quote
                   <SendIcon className="h-4 w-4" />
                 </span>
               </Button>
+
+              {/* Copy/helper (auto hides in 10s) */}
+              {showHelper && lastMessage ? (
+                <div className="mt-3 rounded-lg border border-slate-200 bg-white/70 p-3 text-xs text-slate-700">
+                  <div className="font-semibold">
+                    {copied
+                      ? "✅ Message copied. Paste in Messenger and send."
+                      : "Message preview (copy may be blocked by browser)"}
+                  </div>
+
+                  <pre className="mt-2 whitespace-pre-wrap rounded-md bg-white p-2 text-[11px] text-slate-700">
+                    {lastMessage}
+                  </pre>
+
+                  {!copied ? (
+                    <button
+                      type="button"
+                      className="mt-2 underline"
+                      onClick={() => copyText(lastMessage).then(setCopied)}
+                    >
+                      Copy message
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );
@@ -160,69 +267,31 @@ export default function Hero() {
 function PhoneIcon({ className = "" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M8 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <path
-        d="M10 18h4"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M8 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="2" />
+      <path d="M10 18h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
-
 function LaptopIcon({ className = "" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 6h16v10H4V6Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M2 18h20"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M4 6h16v10H4V6Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M2 18h20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
-
 function GridIcon({ className = "" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
+      <path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
 }
-
 function SendIcon({ className = "" }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M3 11.5L21 3l-8.5 18-2.9-7.2L3 11.5Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M21 3L9.6 13.8"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M3 11.5L21 3l-8.5 18-2.9-7.2L3 11.5Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M21 3L9.6 13.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
-

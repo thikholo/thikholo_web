@@ -38,7 +38,7 @@ function PayLogo({ src, alt }) {
 
 export default function Footer() {
   return (
-<footer className="bg-[#17161A] text-white">
+<footer id="footer" className="bg-[#17161A] text-white">
   <Container className="py-12">
     {/* Logo (centered + bigger) */}
     <div className="flex justify-center pb-14"> {/* 56px bottom padding */}
