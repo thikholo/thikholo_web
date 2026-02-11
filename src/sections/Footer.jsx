@@ -9,6 +9,7 @@ import bkash from "../assets/bkash.png";
 import rocket from "../assets/rocket.png";
 import google from "../assets/google.png";
 import apple from "../assets/apple.png";
+import { Link } from "react-router-dom";
 
 const payments = [
   { src: cod, alt: "Cash on Delivery" },
@@ -80,12 +81,9 @@ export default function Footer() {
         <ul className="mt-6 grid gap-10 text-sm text-white/70">
           <li className="flex gap-2">
             <span className="mt-[7px] h-2 w-2 rounded-full bg-white/30" />
-            <span>Shop 72, Level 18 Bashundhara city shopping complex</span>
+            <span>Rifles Square, Shimanto Shambhar Mall. Level 3. Shop 3053. Jigatola. Dhanmondi, Dhaka.</span>
           </li>
-          <li className="flex gap-2">
-            <span className="mt-[7px] h-2 w-2 rounded-full bg-white/30" />
-            <span>Shop 72, Level 18 Jamuna future park</span>
-          </li>
+      
         </ul>
       </div>
 
@@ -119,12 +117,12 @@ export default function Footer() {
     <div className="mt-10 grid gap-6 border-t border-white/10 pt-8 md:grid-cols-3">
       <div>
         <div className="text-base font-bold text-white">Contact</div>
-        <div className="mt-6 text-sm text-white/70">+880 1234 567 890</div>
+        <div className="mt-6 text-sm text-white/70">+8801738588006</div>
       </div>
 
       <div>
         <div className="text-base font-bold text-white">Email</div>
-        <div className="mt-6 text-sm text-white/70">support@thikholo.com</div>
+        <div className="mt-6 text-sm text-white/70">thikholo.live@gmail.com</div>
       </div>
 
       <div>
@@ -172,8 +170,8 @@ export default function Footer() {
       <div className="text-xs text-white/60">© {new Date().getFullYear()} ThikHolo. Copyright</div>
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-white/60">
-        <a href="#" className="hover:text-white">Terms of Services</a>
-        <a href="#" className="hover:text-white">Privacy Policy</a>
+<Link to="/terms-condition" className="hover:text-white">Terms &amp; Conditions</Link>
+<Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
       </div>
     </div>
   </Container>

@@ -62,21 +62,27 @@ export default function FAQ() {
 
                 <div>
                   <div className="text-xs font-semibold text-slate-900">Live agents 9 AM to 10 PM</div>
-                  <div className="mt-1 text-[11px] text-slate-500">+880 1234 567 890</div>
+                  <div className="mt-1 text-[11px] text-slate-500">+8801738588006</div>
                 </div>
               </div>
 
               {/* Drop a message */}
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
-                  <MailMiniIcon className="h-4 w-4 text-slate-700" />
-                </span>
+<a
+  href={`mailto:thikholo.live@gmail.com?subject=${encodeURIComponent(
+    "Hey There I am reaching you guys for "
+  )}`}
+  className="flex items-start gap-3 rounded-xl p-2 -m-2 hover:bg-slate-50"
+>
+  <span className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
+    <MailMiniIcon className="h-4 w-4 text-slate-700" />
+  </span>
 
-                <div>
-                  <div className="text-xs font-semibold text-slate-900">Drop a Message</div>
-                  <div className="mt-1 text-[11px] text-slate-500">support@thikholo.com</div>
-                </div>
-              </div>
+  <div>
+    <div className="text-xs font-semibold text-slate-900">Drop a Message</div>
+    <div className="mt-1 text-[11px] text-slate-500">thikholo.live@gmail.com</div>
+  </div>
+</a>
+
             </div>
 
             {/* ✅ Removed “Schedule a callback” button + helper text as requested */}
@@ -168,13 +174,16 @@ export default function FAQ() {
           to visit a repair shop.
         </p>
 
-        <button
-          type="button"
-          className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#F6FF7A] px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm hover:opacity-95"
-        >
-          Get My Device Fixed Now
-          <SendIcon className="h-4 w-4" />
-        </button>
+<a
+  href="https://www.facebook.com/thikholo.live"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#F6FF7A] px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm hover:opacity-95"
+>
+  Get My Device Fixed Now
+  <SendIcon className="h-4 w-4" />
+</a>
+
 
         <div className="mt-3 text-xs text-white/75">You call. We’ll fix it.</div>
       </div>

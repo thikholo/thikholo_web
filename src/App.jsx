@@ -1,23 +1,16 @@
-import Navbar from './sections/Navbar.jsx'
-import Hero from './sections/Hero.jsx'
-import Services from './sections/Services.jsx'
-import HowItWorks from './sections/HowItWorks.jsx'
-import Pricing from './sections/Pricing.jsx'
-import FAQ from './sections/FAQ.jsx'
-import Footer from './sections/Footer.jsx'
+import { Routes, Route } from "react-router-dom";
+
+import Home from "../src/Home.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
+import TermsCondition from "./pages/TermsCondition.jsx";
 
 export default function App() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <HowItWorks />
-        <Pricing />
-        <FAQ />
-      </main>
-      <Footer />
-    </div>
-  )
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-condition" element={<TermsCondition />} />
+      <Route path="*" element={<Home />} />
+    </Routes>
+  );
 }
