@@ -24,7 +24,6 @@ const OTHER_BRANDS = [
   "Sennheiser","TP-Link","D-Link","Netgear","Apple","Google","Other",
 ];
 
-
 const MESSENGER_URL = "https://www.facebook.com/messages/t/thikholo.live";
 
 function Select({ placeholder = "Select", options = [], value, onChange }) {
@@ -76,7 +75,6 @@ export default function Hero() {
   const [lastMessage, setLastMessage] = useState("");
   const [copied, setCopied] = useState(false);
 
-  // ✅ move hooks INSIDE component
   const [showHelper, setShowHelper] = useState(false);
   const helperTimerRef = useRef(null);
 
@@ -103,55 +101,76 @@ export default function Hero() {
   function showHelperFor10s() {
     setShowHelper(true);
     if (helperTimerRef.current) clearTimeout(helperTimerRef.current);
-    helperTimerRef.current = setTimeout(() => setShowHelper(false), 3_000);
+    helperTimerRef.current = setTimeout(() => setShowHelper(false), 10_000);
   }
 
-async function onGetQuote() {
-  const b = brand.trim();
-  const m = model.trim();
-  const p = problem.trim();
+  async function onGetQuote() {
+    const b = brand.trim();
+    const m = model.trim();
+    const p = problem.trim();
 
-  if (!deviceType || !b || !m || !p) {
-    alert("Please select Device Type, Brand, and fill Model + Problem.");
-    return;
-  }
-
-  const msg =
-    `Device Type: ${deviceLabel}\n` +
-    `Brand: ${b}\n` +
-    `Model: ${m}\n` +
-    `Problem: ${p}`;
-
-  setLastMessage(msg);
-  setCopied(false);
-  showHelperFor10s();
-
-  const ok = await copyText(msg);
-  setCopied(ok);
-
-  // ✅ clear fields (React state)
-  setBrand("");
-  setModel("");
-  setProblem("");
-
-  // ⚠️ NOTE: opening a new tab after setTimeout may be blocked by popup blockers
-setTimeout(() => {
-    try {
-      win.location.href = MESSENGER_URL;
-    } catch {
-      // fallback if browser blocks location change
-      window.location.href = MESSENGER_URL;
+    if (!deviceType || !b || !m || !p) {
+      alert("Please select Device Type, Brand, and fill Model + Problem.");
+      return;
     }
-  }, 3000);
-}
 
+    const msg =
+      `Device Type: ${deviceLabel}\n` +
+      `Brand: ${b}\n` +
+      `Model: ${m}\n` +
+      `Problem: ${p}`;
+
+    setLastMessage(msg);
+    setCopied(false);
+    showHelperFor10s();
+
+    const ok = await copyText(msg);
+    setCopied(ok);
+
+    // clear fields
+    setBrand("");
+    setModel("");
+    setProblem("");
+
+    // ✅ Popup-safe way: open a blank tab immediately (user gesture), then navigate after 3s
+    const win = window.open("about:blank", "_blank");
+    setTimeout(() => {
+      if (win) win.location.href = MESSENGER_URL;
+      else window.location.href = MESSENGER_URL; // fallback
+    }, 3000);
+  }
 
   return (
     <section id="top" className="w-full">
       <div className="relative w-full overflow-hidden bg-[#BBEAF7] min-h-[480px] lg:min-h-[680px]">
-        {/* Left vector */}
+
+        {/* Left vector area */}
         <div className="pointer-events-none absolute inset-y-0 left-0 hidden md:block w-[45%] lg:w-[40%] xl:w-[36%] 2xl:w-[25%]">
           <img src={heroVector} alt="" className="h-full w-full object-cover opacity-95" />
+
+          {/* ✅ Bangladesh text: constrained inside vector area, no overlap with form */}
+          <div
+            className="
+    hidden lg:block
+    absolute z-10
+    top-[22%] right-6
+
+    font-['Inter'] font-extrabold tracking-tight text-slate-900
+    lg:text-[46px] xl:text-[56px] 2xl:text-[64px]
+
+    lg:leading-[48px]
+    xl:leading-[64px]
+    2xl:leading-[74px]
+
+    max-w-[250px] xl:max-w-[280px] 2xl:max-w-[320px]
+            "
+          >
+            Bangladesh’s 1st
+            <br />
+            Online Repair
+            <br />
+            Platform
+          </div>
         </div>
 
         {/* Right content pinned */}
@@ -165,7 +184,6 @@ setTimeout(() => {
               </h1>
 
               <div className="mt-4 rounded-xl bg-white/90 p-4 lg:p-5 xl:p-6 2xl:p-7 shadow-soft backdrop-blur">
-                {/* Device Type radio pills */}
                 <div className="flex flex-wrap gap-2">
                   {DEVICE_TYPES.map((t) => (
                     <TabPill
@@ -231,7 +249,6 @@ setTimeout(() => {
                 </span>
               </Button>
 
-              {/* Copy/helper (auto hides in 10s) */}
               {showHelper && lastMessage ? (
                 <div className="mt-3 rounded-lg border border-slate-200 bg-white/70 p-3 text-xs text-slate-700">
                   <div className="font-semibold">
@@ -255,6 +272,7 @@ setTimeout(() => {
                   ) : null}
                 </div>
               ) : null}
+
             </div>
           </div>
         </div>
