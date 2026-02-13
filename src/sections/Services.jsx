@@ -23,34 +23,28 @@ const topFeatures = [
   },
 ];
 
-const steps = [
+// ✅ New “Service process” cards (as per your screenshot)
+const process = [
   {
-    step: "Step 1",
-    title: "Original Products",
-    desc: "From fill-up? Nah! Just tap the 'Repair Now' button, select your device and issue.",
-    img: Assets.photoCard1,
-    pill: "Time: 30 seconds",
+    title: "Sign up",
+    desc: "Create your free account with ThikHolo. You'll get instant access to track everything.",
+    icon: UserIcon,
   },
   {
-    step: "Step 2",
-    title: "Instant Quote & Pickup Scheduled",
-    desc: "Receive a transparent, no-hidden-fee quote instantly. Choose a pickup time that suits you.",
-    img: Assets.photoCard2,
-    pill: "Flexible scheduling, no surprises.",
+    title: "Get Quotation",
+    desc: "Get quotation from service points. A transparent estimate will be shared instantly.",
+    icon: QuoteIcon,
   },
   {
-    step: "Step 3",
-    title: "Safe Pickup & Expert Repair",
-    desc: "Our certified technician picks up your device securely. Track your repair status live via SMS or our website.",
-    img: Assets.photoMain,
-    pill: "Real-time updates, peace of mind.",
+    title: "PickUp",
+    desc: "We’ll pick up your device from your home.",
+    sub: "Dhaka City — Free",
+    icon: PickupIcon,
   },
   {
-    step: "Step 4",
-    title: "Fast Return & Easy Payment",
-    desc: "Once repaired, your device is returned promptly. Pay online or upon delivery.",
-    img: Assets.photoPortrait,
-    pill: "Multiple payment options",
+    title: "LiveUpdate",
+    desc: "You will receive live updates for every stage. The process is recorded & tagged to your ThikHolo ID.",
+    icon: LiveIcon,
   },
 ];
 
@@ -80,34 +74,142 @@ export default function Services() {
           </h2>
         </div>
 
-        {/* Steps */}
-        <div className="mt-10 grid gap-6 lg:grid-cols-4">
-          {steps.map((s) => (
-            <div key={s.step} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-              {/* Step badge */}
-              <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-semibold text-slate-700">
-                {s.step}
-              </div>
+        {/* ✅ New process layout */}
+        <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+          {process.map((p, idx) => {
+            const Icon = p.icon;
+            const n = idx + 1;
 
-              {/* Image */}
-              <div className="mt-3 overflow-hidden rounded-xl bg-slate-100">
-                <img src={s.img} alt={s.title} className="h-44 w-full object-cover" />
-              </div>
+            return (
+              <div key={p.title} className="flex flex-col items-center">
+                {/* Top circle step number */}
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#EAF2FF] md:h-12 md:w-12">
+                  <span className="text-base font-extrabold text-[#1D4ED8] md:text-lg">
+                    {n}
+                  </span>
+                </div>
 
-              {/* Content */}
-              <div className="mt-4">
-                <div className="text-sm font-semibold text-slate-900">{s.title}</div>
-                <p className="mt-2 text-xs leading-relaxed text-slate-500">{s.desc}</p>
-              </div>
+                {/* Card */}
+                <div className="w-full overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200">
+                  {/* Deep blue header */}
+                  <div className="flex items-center gap-2 bg-[#0B2A87] px-4 py-3">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-white/10">
+                      <Icon className="h-4 w-4 text-white" />
+                    </span>
+                    <div className="text-sm font-bold text-white">{p.title}</div>
+                  </div>
 
-              {/* Bottom pill */}
-              <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] text-slate-700">
-                {s.pill}
+                  {/* Blue body */}
+                  <div className="bg-[#1D4ED8] px-4 py-4">
+                    <p className="text-xs leading-relaxed text-white/90">
+                      {p.desc}
+                    </p>
+
+                    {p.sub ? (
+                      <p className="mt-2 text-[11px] font-semibold text-white/90">
+                        {p.sub}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Container>
     </section>
+  );
+}
+
+/* ---- Small icons (inline SVG) ---- */
+function UserIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M20 21a8 8 0 0 0-16 0"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 13a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function QuoteIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M7 9h6M7 13h10M7 17h8"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6 3h12a2 2 0 0 1 2 2v14l-4-3H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PickupIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M3 7h11v10H3V7Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 10h4l3 3v4h-7v-7Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM18 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function LiveIcon({ className = "" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 12a8 8 0 0 1 16 0"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M7 12a5 5 0 0 1 10 0"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 12v6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M10.5 18h3"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
