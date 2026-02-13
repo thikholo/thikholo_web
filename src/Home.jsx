@@ -8,7 +8,7 @@ import Footer from './sections/Footer.jsx'
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen font-sans">
       <Navbar />
       <main>
         <Hero />
