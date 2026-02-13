@@ -5,14 +5,29 @@ import goodOne from "../assets/goodOne.jpg";
 import goodTwo from "../assets/goodTwo.jpg";
 import goodThree from "../assets/goodThree.jpg";
 import goodFour from "../assets/goodFour.jpg";
+import goodFive from "../assets/goodFive.jpg";
+import goodSix from "../assets/goodSix.jpg";
+import goodSeven from "../assets/goodSeven.jpg";
+import goodEight from "../assets/goodEight.jpg";
+import goodNine from "../assets/goodNine.jpg";
 
 import photoMain from "../assets/fig/photo-main.png";
 
-const gallery = [
-  { src: goodOne, alt: "Feel good 1", className: "lg:col-span-1 lg:row-span-1" },
-  { src: goodTwo, alt: "Feel good 2", className: "lg:col-span-1 lg:row-span-1" },
-  { src: goodThree, alt: "Feel good 3", className: "lg:col-span-1 lg:row-span-1" },
-  { src: goodFour, alt: "Feel good 4", className: "lg:col-span-1 lg:row-span-1" },
+const bentoGallery = [
+  // Top row (3 small) + right tall
+  { src: goodOne, alt: "Bento 1", className: "md:col-span-3 md:row-span-2" },
+  { src: goodTwo, alt: "Bento 2", className: "md:col-span-3 md:row-span-2" },
+  { src: goodThree, alt: "Bento 3", className: "md:col-span-3 md:row-span-2" },
+  { src: goodFour, alt: "Bento 4", className: "md:col-span-3 md:row-span-4" },
+
+  // Middle row
+  { src: goodFive, alt: "Bento 5", className: "md:col-span-3 md:row-span-2" },
+  { src: goodSix, alt: "Bento 6", className: "md:col-span-6 md:row-span-2" },
+
+  // Bottom row + right tall
+  { src: goodSeven, alt: "Bento 7", className: "md:col-span-6 md:row-span-2" },
+  { src: goodEight, alt: "Bento 8", className: "md:col-span-3 md:row-span-2" },
+  { src: goodNine, alt: "Bento 9", className: "md:col-span-3 md:row-span-2" },
 ];
 
 const reviews = [
@@ -86,7 +101,6 @@ export default function Pricing() {
   const canNext = index < reviews.length - 1;
 
   const translateX = useMemo(() => {
-    // card width + gap (tuned to match screenshot feel)
     const card = 280;
     const gap = 18;
     return -(index * (card + gap));
@@ -94,52 +108,38 @@ export default function Pricing() {
 
   return (
     <section id="pricing" className="border-t border-slate-200 bg-white">
-      {/* 1) Feel good gallery */}
-        <Container className="py-14">
-          <h2 className="text-2xl font-semibold tracking-tight md:text-3xl text-center">
-            Feel good message about saving the planet
-          </h2>
+      {/* 1) Bento gallery */}
+      <Container className="py-14">
+        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl text-center">
+          Feel good message about saving the planet
+        </h2>
 
-<div className="mt-8 grid gap-6 md:grid-cols-12">
-  {/* 1 (wide) */}
-  <div className="md:col-span-7 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
-    <img
-      src={goodOne}
-      alt="Feel good 1"
-      className="h-[220px] w-full object-cover sm:h-[260px] md:h-[280px] lg:h-[300px] xl:h-[340px] 2xl:h-[380px]"
-    />
-  </div>
-
-  {/* 2 (narrow) */}
-  <div className="md:col-span-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
-    <img
-      src={goodTwo}
-      alt="Feel good 2"
-      className="h-[220px] w-full object-cover sm:h-[260px] md:h-[280px] lg:h-[300px] xl:h-[340px] 2xl:h-[380px]"
-    />
-  </div>
-
-  {/* 3 (narrow) */}
-  <div className="md:col-span-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
-    <img
-      src={goodFour}
-      alt="Feel good 3"
-      className="h-[220px] w-full object-cover sm:h-[260px] md:h-[280px] lg:h-[300px] xl:h-[340px] 2xl:h-[380px]"
-    />
-  </div>
-
-  {/* 4 (wide) */}
-  <div className="md:col-span-7 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
-    <img
-      src={goodThree}
-      alt="Feel good 4"
-      className="h-[220px] w-full object-cover sm:h-[260px] md:h-[280px] lg:h-[300px] xl:h-[340px] 2xl:h-[380px]"
-    />
-  </div>
-</div>
-
-
-
+        <div
+          className="
+            mt-8 grid grid-cols-2 gap-4 sm:gap-6
+            md:grid-cols-12 md:grid-flow-dense
+            md:auto-rows-[84px] lg:auto-rows-[96px] xl:auto-rows-[110px] 2xl:auto-rows-[124px]
+          "
+        >
+          {bentoGallery.map((g) => (
+            <div
+              key={g.alt}
+              className={[
+                "relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm",
+                // mobile: consistent ratio
+                "aspect-[4/3] sm:aspect-[16/10] md:aspect-auto md:h-full",
+                g.className,
+              ].join(" ")}
+            >
+              <img
+                src={g.src}
+                alt={g.alt}
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
       </Container>
 
       {/* 2) Reviews slider */}
@@ -147,7 +147,7 @@ export default function Pricing() {
         <Container className="py-14">
           <div className="flex items-center justify-between gap-6">
             <h3 className="text-2xl font-semibold tracking-tight md:text-3xl">
-              Over 1M customers in Bangladesh
+              Committed to make your life easier and greener
             </h3>
 
             <div className="flex items-center gap-2">
@@ -197,7 +197,6 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Slider */}
           <div className="mt-8 overflow-hidden">
             <div
               className="flex gap-[18px] transition-transform duration-300 ease-out"
