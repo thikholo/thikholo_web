@@ -1,6 +1,59 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import Button from "../components/Button.jsx";
 import heroVector from "../assets/heroVector.svg";
+
+const BANGLADESH_FULL_TEXT = "Bangladesh's 1st\nOnline Repair\nPlatform";
+const TYPE_DELAY = 70;
+const HOLD_PAUSE = 2200;
+const DELETE_DELAY = 50;
+const RESTART_PAUSE = 1800;
+
+function TypewriterHeadline() {
+  const [charIndex, setCharIndex] = useState(0);
+  const [phase, setPhase] = useState("typing"); // typing | holding | deleting
+  const fullLength = BANGLADESH_FULL_TEXT.length;
+  const displayText = BANGLADESH_FULL_TEXT.slice(0, charIndex);
+
+  useEffect(() => {
+    if (phase === "typing") {
+      if (charIndex < fullLength) {
+        const t = setTimeout(() => setCharIndex((c) => c + 1), TYPE_DELAY);
+        return () => clearTimeout(t);
+      }
+      const t = setTimeout(() => setPhase("holding"), TYPE_DELAY);
+      return () => clearTimeout(t);
+    }
+    if (phase === "holding") {
+      const t = setTimeout(() => setPhase("deleting"), HOLD_PAUSE);
+      return () => clearTimeout(t);
+    }
+    if (phase === "deleting") {
+      if (charIndex > 0) {
+        const t = setTimeout(() => setCharIndex((c) => c - 1), DELETE_DELAY);
+        return () => clearTimeout(t);
+      }
+      const t = setTimeout(() => {
+        setPhase("typing");
+      }, RESTART_PAUSE);
+      return () => clearTimeout(t);
+    }
+    return undefined;
+  }, [phase, charIndex, fullLength]);
+
+  const parts = displayText.split("\n");
+
+  return (
+    <div className="animate-text-pulse min-h-[1.2em]">
+      {parts.map((segment, i) => (
+        <span key={i}>
+          {segment}
+          {i < parts.length - 1 ? <br /> : null}
+        </span>
+      ))}
+      <span className="inline-block w-0.5 h-[0.85em] bg-brand-500 align-baseline ml-0.5 animate-cursor" aria-hidden />
+    </div>
+  );
+}
 
 const DEVICE_TYPES = [
   { key: "phone", label: "Phone/Tab", icon: PhoneIcon },
@@ -9,19 +62,19 @@ const DEVICE_TYPES = [
 ];
 
 const PHONE_BRANDS = [
-  "Apple","Samsung","Xiaomi","Redmi","POCO","Vivo","OPPO","Realme","OnePlus",
-  "Google","Huawei","Honor","Motorola","Nokia","Sony","ASUS","Lenovo",
-  "Infinix","Tecno","itel","Walton","Symphony","Nothing","Other",
+  "Apple", "Samsung", "Xiaomi", "Redmi", "POCO", "Vivo", "OPPO", "Realme", "OnePlus",
+  "Google", "Huawei", "Honor", "Motorola", "Nokia", "Sony", "ASUS", "Lenovo",
+  "Infinix", "Tecno", "itel", "Walton", "Symphony", "Nothing", "Other",
 ];
 
 const LAPTOP_BRANDS = [
-  "Apple","Dell","HP","Lenovo","ASUS","Acer","MSI","Razer","Microsoft",
-  "Samsung","Huawei","LG","Gigabyte","VAIO","Dynabook","Framework","Other",
+  "Apple", "Dell", "HP", "Lenovo", "ASUS", "Acer", "MSI", "Razer", "Microsoft",
+  "Samsung", "Huawei", "LG", "Gigabyte", "VAIO", "Dynabook", "Framework", "Other",
 ];
 
 const OTHER_BRANDS = [
-  "Sony","JBL","Xiaomi","Samsung","Walton","Anker","Logitech","Bose",
-  "Sennheiser","TP-Link","D-Link","Netgear","Apple","Google","Other",
+  "Sony", "JBL", "Xiaomi", "Samsung", "Walton", "Anker", "Logitech", "Bose",
+  "Sennheiser", "TP-Link", "D-Link", "Netgear", "Apple", "Google", "Other",
 ];
 
 const MESSENGER_URL = "https://www.facebook.com/messages/t/thikholo.live";
@@ -51,12 +104,12 @@ function TabPill({ active, icon: Icon, children, onClick }) {
       type="button"
       onClick={onClick}
       className={[
-        "inline-flex items-center gap-2 rounded-md font-semibold transition",
+        "inline-flex items-center gap-2 rounded-md font-semibold transition-all duration-200",
         "px-3 py-1.5 text-xs",
         "lg:px-4 lg:py-2 lg:text-sm",
         active
-          ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-          : "bg-transparent text-slate-600 hover:bg-white/60",
+          ? "bg-[#1D4ED8] text-white shadow-md border border-blue-700 ring-2 ring-blue-400/40"
+          : "bg-white/70 text-slate-600 hover:bg-white hover:text-slate-800 border border-slate-200/80",
       ].join(" ")}
       aria-pressed={active}
     >
@@ -165,11 +218,7 @@ export default function Hero() {
     max-w-[250px] xl:max-w-[280px] 2xl:max-w-[320px]
             "
           >
-            Bangladesh’s 1st
-            <br />
-            Online Repair
-            <br />
-            Platform
+            <TypewriterHeadline />
           </div>
         </div>
 

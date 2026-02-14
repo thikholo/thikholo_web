@@ -24,6 +24,21 @@ export default {
       boxShadow: {
         soft: '0 10px 30px rgba(2, 8, 23, 0.10)',
       },
+      keyframes: {
+        'text-pulse': {
+          '0%, 100%': { opacity: '1', textShadow: '0 0 20px rgba(14, 156, 255, 0.15)' },
+          '50%': { opacity: '0.92', textShadow: '0 0 32px rgba(14, 156, 255, 0.25)' },
+        },
+        cursor: {
+          '0%, 45%': { opacity: '1' },
+          '50%, 95%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+      animation: {
+        'text-pulse': 'text-pulse 3s ease-in-out infinite',
+        cursor: 'cursor 1s step-end infinite',
+      },
     },
   },
   plugins: [],

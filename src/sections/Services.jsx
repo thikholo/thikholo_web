@@ -81,16 +81,23 @@ export default function Services() {
             const n = idx + 1;
 
             return (
-              <div key={p.title} className="flex flex-col items-center">
+              <div key={p.title} className="group flex flex-col items-center">
                 {/* Top circle step number */}
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#EAF2FF] md:h-12 md:w-12">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#EAF2FF] transition-all duration-200 group-hover:scale-110 group-hover:bg-[#D6E5FF] md:h-12 md:w-12">
                   <span className="text-base font-extrabold text-[#1D4ED8] md:text-lg">
                     {n}
                   </span>
                 </div>
 
                 {/* Card */}
-                <div className="w-full overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200">
+                <div
+                  className="
+                    w-full overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200
+                    transition-all duration-200 ease-out
+                    hover:scale-[1.03] hover:shadow-lg hover:ring-2 hover:ring-[#1D4ED8]/40
+                    active:scale-[0.98] active:shadow
+                  "
+                >
                   {/* Deep blue header */}
                   <div className="flex items-center gap-2 bg-[#0B2A87] px-4 py-3">
                     <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-white/10">

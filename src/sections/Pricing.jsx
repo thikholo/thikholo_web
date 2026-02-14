@@ -16,18 +16,50 @@ import photoMain from "../assets/fig/photo-main.png";
 const bentoGallery = [
   // Top row (3 small) + right tall
   { src: goodOne, alt: "Bento 1", className: "md:col-span-3 md:row-span-2" },
-  { src: goodTwo, alt: "Bento 2", className: "md:col-span-3 md:row-span-2" },
+  {
+    src: goodTwo,
+    alt: "Bento 2",
+    className: "md:col-span-3 md:row-span-2",
+    motivationText:
+      "Repairing a device costs 70–90% less than replacing it.",
+    textAlign: "left",
+    textPosition: "center",
+  },
   { src: goodThree, alt: "Bento 3", className: "md:col-span-3 md:row-span-2" },
   { src: goodFour, alt: "Bento 4", className: "md:col-span-3 md:row-span-4" },
 
   // Middle row
   { src: goodFive, alt: "Bento 5", className: "md:col-span-3 md:row-span-2" },
-  { src: goodSix, alt: "Bento 6", className: "md:col-span-6 md:row-span-2" },
+  {
+    src: goodSix,
+    alt: "Bento 6",
+    className: "md:col-span-6 md:row-span-2",
+    motivationText:
+      "The world generates over 60 million metric tons of e-waste annually — and it's the fastest-growing waste stream.",
+    textAlign: "left",
+    textPosition: "center",
+  },
 
   // Bottom row + right tall
-  { src: goodSeven, alt: "Bento 7", className: "md:col-span-6 md:row-span-2" },
+  {
+    src: goodSeven,
+    alt: "Bento 7",
+    className: "md:col-span-6 md:row-span-2",
+    motivationText:
+      "Extending a phone's life by just 1 year can reduce its carbon impact by up to 30%.",
+    textAlign: "left",
+    textPosition: "center",
+  },
   { src: goodEight, alt: "Bento 8", className: "md:col-span-3 md:row-span-2" },
-  { src: goodNine, alt: "Bento 9", className: "md:col-span-3 md:row-span-2" },
+  {
+    src: goodNine,
+    alt: "Bento 9",
+    className: "md:col-span-3 md:row-span-2",
+    motivationText:
+      "70–80% of a smartphone's carbon footprint comes from manufacturing alone.",
+    textAlign: "left",
+    textPosition: "center",
+  },
 ];
 
 const reviews = [
@@ -137,6 +169,44 @@ export default function Pricing() {
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
               />
+              {g.motivationText ? (() => {
+                  const align = g.textAlign ?? "center";
+                  const position = g.textPosition ?? "center";
+                  return (
+                    <>
+                      <div
+                        className="absolute inset-0 bg-[#0B2A87]/65"
+                        aria-hidden
+                      />
+                      <div
+                        className={[
+                          "absolute inset-0 flex p-4 sm:p-5 md:p-6 lg:p-7",
+                          position === "top" && "items-start",
+                          position === "center" && "items-center",
+                          position === "bottom" && "items-end",
+                          align === "left" && "justify-start",
+                          align === "center" && "justify-center",
+                          align === "right" && "justify-end",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        <p
+                          className={[
+                            "max-w-[90%] text-sm font-semibold leading-snug text-white drop-shadow-md sm:max-w-[85%] sm:text-base md:text-sm lg:text-base",
+                            align === "left" && "text-left",
+                            align === "center" && "text-center",
+                            align === "right" && "text-right",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {g.motivationText}
+                        </p>
+                      </div>
+                    </>
+                  );
+                })() : null}
             </div>
           ))}
         </div>
